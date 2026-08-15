@@ -46,15 +46,16 @@ export abstract class HttpService<REQ, RES> {
     });
   }
 
-  public getAllByUuid(uuid: string): Observable<RES[]> {
-    return this.httpClient.get<RES[]>(this.createUrlWithUuid(uuid), {
+  public getAllByUuid(uuid: string): Observable<RES> {
+    return this.httpClient.get<RES>(this.createUrlWithUuid(uuid), {
       headers: this.headers,
     });
   }
 
-  public getAll(...options: Record<string, unknown>[]): Observable<RES[]> {
+  // TODO: improve type for RES...
+  public getAll(...options: Record<string, unknown>[]): Observable<RES> {
     const params = this.getHttpParams(...options);
-    return this.httpClient.get<RES[]>(this.url, { headers: this.headers, params });
+    return this.httpClient.get<RES>(this.url, { headers: this.headers, params });
   }
 
   public post(body: REQ = {} as REQ): Observable<RES> {

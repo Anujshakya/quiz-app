@@ -1,0 +1,17 @@
+@if (quizzes.length === 0) {
+  <div
+    class="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800"
+    role="alert"
+  >
+    No quizzes found!
+  </div>
+} @else {
+  <h2 class="mb-4 text-2xl font-semibold text-gray-900">Quizzes</h2>
+
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    @for (quiz of quizzes; track $index) {
+      <app-quiz-card [quiz]="quiz">
+      </app-quiz-card>
+    }
+  </div>
+}
