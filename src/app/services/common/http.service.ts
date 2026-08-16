@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppUrlConfig } from '../../app-url.config';
 import { QUIZ_API_CONSTANTS } from '../../shared/api-keys/quiz-api';
+import { ApiListResultModel, ApiResultModel } from '../../models/common/api-response.model';
 
 export abstract class HttpService<REQ, RES> {
   protected httpClient = inject(HttpClient);
@@ -40,36 +41,35 @@ export abstract class HttpService<REQ, RES> {
     return httpParams;
   }
 
-  public getByUuid(uuid: string): Observable<RES> {
-    return this.httpClient.get<RES>(this.createUrlWithUuid(uuid), {
+  public getByUuid(uuid: string): Observable<ApiResultModel<RES>> {
+    return this.httpClient.get<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), {
       headers: this.headers,
     });
   }
 
-  public getAllByUuid(uuid: string): Observable<RES> {
-    return this.httpClient.get<RES>(this.createUrlWithUuid(uuid), {
+  public getAllByUuid(uuid: string): Observable<ApiListResultModel<RES>> {
+    return this.httpClient.get<ApiListResultModel<RES>>(this.createUrlWithUuid(uuid), {
       headers: this.headers,
     });
   }
 
-  // TODO: improve type for RES...
-  public getAll(...options: Record<string, unknown>[]): Observable<RES> {
+  public getAll(...options: Record<string, unknown>[]): Observable<ApiListResultModel<RES>> {
     const params = this.getHttpParams(...options);
-    return this.httpClient.get<RES>(this.url, { headers: this.headers, params });
+    return this.httpClient.get<ApiListResultModel<RES>>(this.url, { headers: this.headers, params });
   }
 
-  public post(body: REQ = {} as REQ): Observable<RES> {
-    return this.httpClient.post<RES>(this.url, { ...body }, { headers: this.headers });
+  public post(body: REQ = {} as REQ): Observable<ApiResultModel<RES>> {
+    return this.httpClient.post<ApiResultModel<RES>>(this.url, { ...body }, { headers: this.headers });
   }
 
-  public put(uuid: string, body: REQ = {} as REQ): Observable<RES> {
-    return this.httpClient.put<RES>(this.createUrlWithUuid(uuid), { ...body }, {
+  public put(uuid: string, body: REQ = {} as REQ): Observable<ApiResultModel<RES>> {
+    return this.httpClient.put<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), { ...body }, {
       headers: this.headers,
     });
   }
 
-  public patch(uuid: string, body: Partial<REQ> = {}): Observable<RES> {
-    return this.httpClient.patch<RES>(this.createUrlWithUuid(uuid), { ...body }, {
+  public patch(uuid: string, body: Partial<REQ> = {}): Observable<ApiResultModel<RES>> {
+    return this.httpClient.patch<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), { ...body }, {
       headers: this.headers,
     });
   }

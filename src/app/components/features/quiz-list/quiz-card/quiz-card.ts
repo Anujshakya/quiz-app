@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { QuizModel } from '../../../../models/quiz.model';
 
 @Component({
   selector: 'app-quiz-card',
@@ -7,8 +8,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './quiz-card.css',
 })
 export class QuizCard {
-  @Input() quiz: any = {};
+  @Input() quiz: QuizModel = {} as QuizModel;
 
+  // TODO: improve difficulty using Enum
   getDifficultyClass(difficulty: string): string {
     switch (difficulty) {
       case 'EASY':

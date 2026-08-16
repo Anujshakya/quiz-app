@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { QuizService } from '../../../services/quiz.service';
 import { QuizCard } from './quiz-card/quiz-card';
+import { QuizModel } from '../../../models/quiz.model';
 
 @Component({
   selector: 'app-quiz-list',
@@ -12,17 +13,23 @@ import { QuizCard } from './quiz-card/quiz-card';
 export class QuizList implements OnInit, OnDestroy {
   private sub: Subscription = new Subscription();
 
-  quizzes: any[] = [];
+  quizzes: QuizModel[] = [];
 
   constructor(private quizService: QuizService) {}
 
   ngOnInit() {
     this.sub.add(
       this.quizService.getAll().subscribe((res) => {
-        console.log(res);
 
-        this.quizzes = res.data;
-        console.log(this.quizzes);
+        // TODO: bypass the Success and Error response in subscription
+        if (res.success) {
+          console.log(res);
+
+          this.quizzes = res.data;
+          console.log(this.quizzes);
+        } else {
+          console.log('Error occurred!')
+        }
       }),
     );
   }
