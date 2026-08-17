@@ -3,7 +3,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppUrlConfig } from '../../app-url.config';
 import { QUIZ_API_CONSTANTS } from '../../shared/api-keys/quiz-api';
-import { ApiListResultModel, ApiResultModel } from '../../models/common/api-response.model';
+import {
+  ApiListResponseModel,
+  ApiListResultModel,
+  ApiResponseModel,
+  ApiResultModel,
+} from '../../models/common/api-response.model';
+import { unwrapApiListResponse, unwrapApiResponse } from './api-response.operator';
 
 export abstract class HttpService<REQ, RES> {
   protected httpClient = inject(HttpClient);
@@ -41,37 +47,41 @@ export abstract class HttpService<REQ, RES> {
     return httpParams;
   }
 
-  public getByUuid(uuid: string): Observable<ApiResultModel<RES>> {
-    return this.httpClient.get<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), {
-      headers: this.headers,
-    });
+  public getByUuid(uuid: string): Observable<ApiResponseModel<RES>> {
+    return this.httpClient
+      .get<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), { headers: this.headers })
+      .pipe(unwrapApiResponse<RES>());
   }
 
-  public getAllByUuid(uuid: string): Observable<ApiListResultModel<RES>> {
-    return this.httpClient.get<ApiListResultModel<RES>>(this.createUrlWithUuid(uuid), {
-      headers: this.headers,
-    });
+  public getAllByUuid(uuid: string): Observable<ApiListResponseModel<RES>> {
+    return this.httpClient
+      .get<ApiListResultModel<RES>>(this.createUrlWithUuid(uuid), { headers: this.headers })
+      .pipe(unwrapApiListResponse<RES>());
   }
 
-  public getAll(...options: Record<string, unknown>[]): Observable<ApiListResultModel<RES>> {
+  public getAll(...options: Record<string, unknown>[]): Observable<ApiListResponseModel<RES>> {
     const params = this.getHttpParams(...options);
-    return this.httpClient.get<ApiListResultModel<RES>>(this.url, { headers: this.headers, params });
+    return this.httpClient
+      .get<ApiListResultModel<RES>>(this.url, { headers: this.headers, params })
+      .pipe(unwrapApiListResponse<RES>());
   }
 
-  public post(body: REQ = {} as REQ): Observable<ApiResultModel<RES>> {
-    return this.httpClient.post<ApiResultModel<RES>>(this.url, { ...body }, { headers: this.headers });
+  public post(body: REQ = {} as REQ): Observable<ApiResponseModel<RES>> {
+    return this.httpClient
+      .post<ApiResultModel<RES>>(this.url, { ...body }, { headers: this.headers })
+      .pipe(unwrapApiResponse<RES>());
   }
 
-  public put(uuid: string, body: REQ = {} as REQ): Observable<ApiResultModel<RES>> {
-    return this.httpClient.put<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), { ...body }, {
-      headers: this.headers,
-    });
+  public put(uuid: string, body: REQ = {} as REQ): Observable<ApiResponseModel<RES>> {
+    return this.httpClient
+      .put<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), { ...body }, { headers: this.headers })
+      .pipe(unwrapApiResponse<RES>());
   }
 
-  public patch(uuid: string, body: Partial<REQ> = {}): Observable<ApiResultModel<RES>> {
-    return this.httpClient.patch<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), { ...body }, {
-      headers: this.headers,
-    });
+  public patch(uuid: string, body: Partial<REQ> = {}): Observable<ApiResponseModel<RES>> {
+    return this.httpClient
+      .patch<ApiResultModel<RES>>(this.createUrlWithUuid(uuid), { ...body }, { headers: this.headers })
+      .pipe(unwrapApiResponse<RES>());
   }
 
   public delete(uuid: string): Observable<void> {

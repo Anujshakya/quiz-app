@@ -35,3 +35,11 @@ export interface ApiErrorResponseModel extends ApiResponseBaseModel {
 /** Use when a request could fail — enables compile-time narrowing on `success`. */
 export type ApiResultModel<T> = ApiResponseModel<T> | ApiErrorResponseModel;
 export type ApiListResultModel<T> = ApiListResponseModel<T> | ApiErrorResponseModel;
+
+/** Thrown when the API returns `{ success: false }` so subscribers can use the `error` callback. */
+export class ApiError extends Error {
+  constructor(public readonly response: ApiErrorResponseModel) {
+    super(response.error.message);
+    this.name = 'ApiError';
+  }
+}

@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ApiError } from '../../../models/common/api-response.model';
+import { QuizModel } from '../../../models/quiz.model';
 import { QuizService } from '../../../services/quiz.service';
 import { QuizCard } from './quiz-card/quiz-card';
-import { QuizModel } from '../../../models/quiz.model';
 
 @Component({
   selector: 'app-quiz-list',
@@ -18,18 +19,23 @@ export class QuizList implements OnInit, OnDestroy {
   constructor(private quizService: QuizService) {}
 
   ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
     this.sub.add(
-      this.quizService.getAll().subscribe((res) => {
-
-        // TODO: bypass the Success and Error response in subscription
-        if (res.success) {
-          console.log(res);
-
+      this.quizService.getAll().subscribe({
+        next: (res) => {
           this.quizzes = res.data;
-          console.log(this.quizzes);
-        } else {
-          console.log('Error occurred!')
-        }
+        },
+        error: (err) => {
+          if (err instanceof ApiError) {
+            console.error(err.response.error.message);
+            return;
+          }
+
+          console.error('Request failed', err);
+        },
       }),
     );
   }
