@@ -1,3 +1,5 @@
+import { QuestionModel } from './question.model';
+
 export interface QuizModel {
   id: string;
   title: string;
@@ -13,4 +15,5 @@ export interface QuizModel {
   questionCount: number;
   plays: number;
   slug: string | null;
+  questions: QuestionModel[];
 }

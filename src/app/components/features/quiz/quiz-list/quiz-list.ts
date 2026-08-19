@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ApiError } from '../../../models/common/api-response.model';
-import { QuizModel } from '../../../models/quiz.model';
-import { QuizService } from '../../../services/quiz.service';
-import { QuizCard } from './quiz-card/quiz-card';
+import { ApiError } from '../../../../models/common/api-response.model';
+import { QuizModel } from '../../../../models/quiz.model';
+import { QuizService } from '../../../../services/quiz.service';
+import { QuizCard } from '../quiz-card/quiz-card';
 
 @Component({
   selector: 'app-quiz-list',

@@ -1,15 +1,21 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './components/pages/home/home.component';
+import { QuizComponent } from './components/pages/quiz/quiz.component';
+import { QuizDetailComponent } from './components/features/quiz/quiz-detail/quiz-detail.component';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'home',
+    redirectTo: 'quiz',
   },
   {
-    path: 'home',
-    title: 'Home',
-    component: HomeComponent,
-  }
+    path: 'quiz',
+    title: 'Quiz',
+    component: QuizComponent,
+  },
+  {
+    path: 'quiz/:id',
+    title: 'Quiz Detail',
+    component: QuizDetailComponent,
+  },
 ];

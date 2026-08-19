@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { QuizModel } from '../../../../models/quiz.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quiz-card',
@@ -9,6 +10,11 @@ import { QuizModel } from '../../../../models/quiz.model';
 })
 export class QuizCard {
   @Input() quiz: QuizModel = {} as QuizModel;
+
+  constructor(
+    private _router: Router,
+  ) {
+  }
 
   // TODO: improve difficulty using Enum
   getDifficultyClass(difficulty: string): string {
@@ -27,9 +33,10 @@ export class QuizCard {
     }
   }
 
-  startQuiz(quiz: any): void {
-    console.log('Starting quiz:', quiz);
+  startQuiz(quiz_id: string): void {
+    console.log('Starting quiz:', quiz_id);
 
     // Navigate to quiz page here
+    this._router.navigate(['/quiz', quiz_id]);
   }
 }

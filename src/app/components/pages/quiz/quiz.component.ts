@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { QuizList } from '../../features/quiz/quiz-list/quiz-list';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-quiz',
   imports: [QuizList],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  templateUrl: './quiz.component.html',
+  styleUrl: './quiz.component.css',
 })
-export class HomeComponent {}
+export class QuizComponent {}
