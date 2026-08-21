@@ -1,0 +1,78 @@
+<section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
+  <div class="mb-6">
+    <div class="mb-2 flex items-center justify-between text-sm text-gray-500">
+      <span>Question {{ currentIndex() + 1 }} of {{ totalQuestions() }}</span>
+      <span>{{ answeredCount() }} answered</span>
+    </div>
+    <div class="h-2 overflow-hidden rounded-full bg-gray-100">
+      <div
+        class="h-full rounded-full bg-blue-600 transition-all"
+        [style.width.%]="progressPercent()"
+      ></div>
+    </div>
+  </div>
+
+  <div class="mb-4 flex flex-wrap items-center gap-2">
+    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+      {{ question().type === 'TRUE_FALSE' ? 'True / False' : 'Multiple choice' }}
+    </span>
+    <span
+      class="rounded-full px-3 py-1 text-xs font-medium"
+      [class]="getDifficultyClass(question().difficulty)"
+    >
+      {{ question().difficulty }}
+    </span>
+  </div>
+
+  <h2 class="mb-6 text-xl font-semibold text-gray-900">{{ question().text }}</h2>
+
+  <ul class="mb-8 space-y-3">
+    @for (answer of question().answers; track answer.id) {
+      <li>
+        <button
+          type="button"
+          class="w-full rounded-lg border px-4 py-3 text-left text-sm font-medium transition-colors focus:outline-none focus:ring-4 focus:ring-blue-300"
+          [class]="
+            selectedAnswerId() === answer.id
+              ? 'border-blue-600 bg-blue-50 text-blue-800'
+              : 'border-gray-200 bg-white text-gray-800 hover:border-blue-300 hover:bg-blue-50'
+          "
+          (click)="selectAnswer.emit(answer.id)"
+        >
+          {{ answer.text }}
+        </button>
+      </li>
+    }
+  </ul>
+
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <button
+      type="button"
+      class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+      [disabled]="isFirst()"
+      (click)="previous.emit()"
+    >
+      Previous
+    </button>
+
+    @if (!isLast()) {
+      <button
+        type="button"
+        class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+        [disabled]="!selectedAnswerId()"
+        (click)="next.emit()"
+      >
+        Next
+      </button>
+    } @else {
+      <button
+        type="button"
+        class="rounded-lg bg-green-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+        [disabled]="!canSubmit()"
+        (click)="submit.emit()"
+      >
+        Submit quiz
+      </button>
+    }
+  </div>
+</section>

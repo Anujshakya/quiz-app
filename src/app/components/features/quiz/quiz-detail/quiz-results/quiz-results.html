@@ -1,0 +1,29 @@
+<section class="space-y-6">
+  <article class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
+    <h1 class="mb-2 text-2xl font-semibold text-gray-900">Results</h1>
+    <p class="mb-6 text-gray-600">
+      You scored <span class="font-semibold text-gray-900">{{ score() }}</span> out of
+      {{ questions().length }}.
+    </p>
+
+    <div class="flex flex-wrap items-center gap-3">
+      <button
+        type="button"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+        (click)="restart.emit()"
+      >
+        Try again
+      </button>
+      <a routerLink="/quiz" class="text-sm font-medium text-gray-600 hover:text-gray-900">
+        Back to quizzes
+      </a>
+    </div>
+  </article>
+
+  @for (question of questions(); track question.id) {
+    <app-quiz-result-question
+      [question]="question"
+      [selectedAnswerId]="selectedAnswerIds()[question.id]"
+    />
+  }
+</section>
